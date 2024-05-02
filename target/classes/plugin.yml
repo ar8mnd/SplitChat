@@ -1,5 +1,5 @@
-name: ${project.name}
-version: ${project.version}
+name: SplitChat
+version: 1.2
 api: ["2.0.0"]
 author: The Oni
 description: ${project.description}

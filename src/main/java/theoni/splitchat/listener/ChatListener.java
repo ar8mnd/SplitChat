@@ -24,7 +24,9 @@ public class ChatListener implements Listener {
 
         Player player = event.getPlayer();
         String message = event.getMessage();
-        
+
+        event.setFormat("{splitchat_prefix} {splitchat_message}");
+
         // Глобальный чат
         if (message.substring(0, 1).equals(config.getString("symbol"))) { 
             
@@ -38,19 +40,18 @@ public class ChatListener implements Listener {
             for (Player players : main.getServer().getOnlinePlayers().values()) {
 
                 String format = event.getFormat()
-                    .replaceFirst(config.getString("symbol"), "")
                     .replace("{splitchat_prefix}", config.getString("prefix.global"))
-                    .replace("{splitchat_distance}", String.valueOf((int) players.distance(player)));
+                    .replace("{splitchat_message}", message)
+                    .replaceFirst(config.getString("symbol"), "");
 
                 players.sendMessage(format);
-                main.getServer().getLogger().info(format);
             }
             event.setCancelled();
 
         // Локльный чат
         } else {
 
-            // Пермишен на отправку сообщения в глобальный чат
+            // Пермишен на отправку сообщения в локальный чат
             if (!player.hasPermission("splitchat.chat.local") && config.getBoolean("enable-permissions")) {
                 player.sendMessage(messages.getString("permission.local"));
                 event.setCancelled();
@@ -62,10 +63,9 @@ public class ChatListener implements Listener {
 
                     String format = event.getFormat()
                         .replace("{splitchat_prefix}", config.getString("prefix.local"))
-                        .replace("{splitchat_distance}", String.valueOf((int) players.distance(player)));
+                        .replace("{splitchat_message}", message);
 
                     players.sendMessage(format);
-                    main.getServer().getLogger().info(format);
                 }
             }
 
@@ -74,7 +74,8 @@ public class ChatListener implements Listener {
                 if (player.distance(spyer) >= config.getInt("radius")) {
                     String spyformat = event.getFormat()
                         .replace("{splitchat_prefix}", config.getString("prefix.spy"))
-                        .replace("{splitchat_distance}", String.valueOf((int) spyer.distance(player)));
+                        .replace("{splitchat_message}", message);
+
                     spyer.sendMessage(spyformat);
                 }
             }
