@@ -50,7 +50,6 @@ public class ChatListener implements Listener {
 
         // Локльный чат
         } else {
-
             // Пермишен на отправку сообщения в локальный чат
             if (!player.hasPermission("splitchat.chat.local") && config.getBoolean("enable-permissions")) {
                 player.sendMessage(messages.getString("permission.local"));
